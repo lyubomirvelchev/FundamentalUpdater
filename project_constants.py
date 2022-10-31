@@ -58,3 +58,19 @@ STRUCTURE = {
         'Income_Statement': {col: [] for col in FINANCIALS_TABLE_COLUMNS},
     }
 }
+
+CRYPTO_TABLE_COLUMNS = ['Id', 'Url', 'ImageUrl', 'ContentCreatedOn', 'Name', 'Symbol', 'CoinName', 'FullName',
+                        'Description', 'AssetTokenStatus', 'Algorithm', 'ProofType', 'SortOrder', 'Sponsored',
+                        'Taxonomy_Access', 'Taxonomy_FCA', 'Taxonomy_FINMA', 'Taxonomy_Industry',
+                        'Taxonomy_CollateralizedAsset', 'Taxonomy_CollateralizedAssetType', 'Taxonomy_CollateralType',
+                        'Taxonomy_CollateralInfo', 'Weiss_Rating', 'Weiss_TechnologyAdoptionRating',
+                        'Weiss_MarketPerformanceRating', 'IsTrading', 'TotalCoinsMined', 'CirculatingSupply',
+                        'BlockNumber', 'NetHashesPerSecond', 'BlockReward', 'BlockTime', 'AssetLaunchDate',
+                        'AssetWhitepaperUrl', 'AssetWebsiteUrl', 'MaxSupply', 'MktCapPenalty', 'IsUsedInDefi',
+                        'IsUsedInNft', 'PlatformType', 'AlgorithmType', 'Difficulty', 'BuiltOn', 'SmartContractAddress',
+                        'DecimalPoints']
+
+CRYPTO_STRUCTURE_DICT = {col: [] for col in CRYPTO_TABLE_COLUMNS}
+
+CRYPTO_SPECIAL_COLUMNS = ['Taxonomy', 'Rating', 'Symbol']
+CRYPTO_URL = 'https://min-api.cryptocompare.com/data/all/coinlist'
