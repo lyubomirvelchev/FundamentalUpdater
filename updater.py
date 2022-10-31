@@ -143,14 +143,13 @@ class UpdateTables:
         if not new_data:
             print('An error has occurred!')
             return
-        print("All data extracted")
+        print("New data extracted")
         self.new_tables = transform_structure_dict_into_dataframes(new_data)
-        print("All data transformed")
         self.table_names = list(self.new_tables.keys())
         self.old_tables = self.get_tables_from_sql_database()
-        print("old_tables_gotten")
+        print("Old data extracted")
         self.compare_new_old_tables()
-        print('Compared!')
+        print('Tables compared!')
         self.delete_delisted_tickers()
         main_tickers = list(set(self.tickers_to_insert + self.tickers_to_be_updated_per_table[self.main_table_name]))
         self.split_tickers_and_update_sql_tables(self.main_table_name, main_tickers)
