@@ -168,9 +168,3 @@ class UpdateCryptoTable:
         self.db_connection.execute(delete_sql_query)
         print("Deleted")
         print(self.tickers_to_delete)
-
-
-if __name__ == '__main__':
-    connection = 'mysql+mysqlconnector://root:MySQLka4anikli469@127.0.0.1:3306'
-    db_name = 'crypto_first_try'
-    a = UpdateCryptoTable(connection, db_name)
