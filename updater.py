@@ -181,7 +181,7 @@ class UpdateTables:
         new_tickers = self.new_tables[self.main_table_name]
         old_tickers = self.old_tables[self.main_table_name]
         self.tickers_to_insert, self.tickers_to_delete = self.return_new_old_tickers(new_tickers, old_tickers)
-        print('Inserting:', len(self.tickers_to_insert), self.tickers_to_insert)
+        print('New tickers:', len(self.tickers_to_insert), self.tickers_to_insert)
         print('Deleting: ', len(self.tickers_to_delete), self.tickers_to_delete)
         self.tickers_to_be_updated_per_table = {}
         for table_name in self.table_names:

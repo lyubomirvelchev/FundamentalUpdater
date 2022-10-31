@@ -67,7 +67,7 @@ class UpdateCryptoTable:
     def compare_new_old_tables(self):
         """Get newly added and delisted tickers. Get tickers that have updated values"""
         self.tickers_to_insert, self.tickers_to_delete = self.return_new_old_tickers(self.new_data, self.old_table)
-        print('Inserting:', len(self.tickers_to_insert), self.tickers_to_insert)
+        print('New tickers:', len(self.tickers_to_insert), self.tickers_to_insert)
         print('Deleting: ', len(self.tickers_to_delete), self.tickers_to_delete)
         new_df, old_df = self.reformat_dataframes(self.new_data, self.old_table)
         if new_df.shape != old_df.shape:  # tables with different dimensions cannot be compared
@@ -171,10 +171,6 @@ class UpdateCryptoTable:
 
 
 if __name__ == '__main__':
-    print('Working')
-    print('')
-    print('')
-    print('')
     connection = 'mysql+mysqlconnector://root:MySQLka4anikli469@127.0.0.1:3306'
     db_name = 'crypto_first_try'
     a = UpdateCryptoTable(connection, db_name)
