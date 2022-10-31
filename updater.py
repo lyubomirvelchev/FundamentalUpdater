@@ -4,8 +4,6 @@ import numpy as np
 from project_constants import *
 from sqlalchemy import create_engine
 
-STRUCTURE_COPY = copy.deepcopy(STRUCTURE)
-
 
 def get_all_symbols():
     """Return dictionary with all symbols that are ETFs or Common/Preferred Stocks for each exchange"""
@@ -140,14 +138,19 @@ class UpdateTables:
         self.exchange_list = exchange_list
         self.main_table_name = 'general'
         self.db_connection = create_engine(self.connection_str + '/' + self.database_name)
-        new_data = extract_full_market_data(STRUCTURE_COPY, self.exchange_list)
+        structure_dict = copy.deepcopy(STRUCTURE)
+        new_data = extract_full_market_data(structure_dict, self.exchange_list)
         if not new_data:
             print('An error has occurred!')
             return
+        print("All data extracted")
         self.new_tables = transform_structure_dict_into_dataframes(new_data)
+        print("All data transformed")
         self.table_names = list(self.new_tables.keys())
         self.old_tables = self.get_tables_from_sql_database()
+        print("old_tables_gotten")
         self.compare_new_old_tables()
+        print('Compared!')
         self.delete_delisted_tickers()
         main_tickers = list(set(self.tickers_to_insert + self.tickers_to_be_updated_per_table[self.main_table_name]))
         self.split_tickers_and_update_sql_tables(self.main_table_name, main_tickers)
