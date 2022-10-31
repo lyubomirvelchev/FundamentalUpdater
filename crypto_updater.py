@@ -171,6 +171,10 @@ class UpdateCryptoTable:
 
 
 if __name__ == '__main__':
+    print('Working')
+    print('')
+    print('')
+    print('')
     connection = 'mysql+mysqlconnector://root:MySQLka4anikli469@127.0.0.1:3306'
     db_name = 'crypto_first_try'
     a = UpdateCryptoTable(connection, db_name)
