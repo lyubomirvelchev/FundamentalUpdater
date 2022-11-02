@@ -1,4 +1,4 @@
-import json, copy
+import json, copy, time
 import requests
 import numpy as np
 import pandas as pd
@@ -6,13 +6,25 @@ from sqlalchemy import create_engine
 from project_constants import *
 
 
-def get_crypto_data(url):
+def get_crypto_data(url, attempt_number=0):
     response = requests.get(url)
-    return json.loads(response.text)
+    if response.status_code == 200:
+        return json.loads(response.text)
+    else:
+        print(response.status_code)
+        if attempt_number < 3:
+            time.sleep(20)
+            print('Another try to get data')
+            return get_crypto_data(url, attempt_number=attempt_number + 1)
+        else:
+            print('Failed to get data from https 4 consecutive times!')
+            return False
 
 
-def create_dataframe_from_crypto_data(structure_dict):
+def get_crypto_data_as_dataframe(structure_dict):
     data = get_crypto_data(CRYPTO_URL)
+    if data is False:
+        return False
     for crypto_info in data['Data'].values():
         used_columns = set()
         for key, value in crypto_info.items():
@@ -51,7 +63,10 @@ class UpdateCryptoTable:
         self.main_table_name = 'crypto_assets'
         self.db_connection = create_engine(self.connection_str + '/' + self.database_name)
         structure_dict = copy.deepcopy(CRYPTO_STRUCTURE_DICT)
-        self.new_data = create_dataframe_from_crypto_data(structure_dict)
+        self.new_data = get_crypto_data_as_dataframe(structure_dict)
+        if not self.new_data:
+            print('An error has occurred!')
+            return
         print("New data extracted")
         self.old_table = self.get_table_from_sql_database()
         print("Old data extracted")

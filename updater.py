@@ -28,7 +28,7 @@ def get_all_symbols():
     return symbols_per_exchange
 
 
-def get_ticker_data_as_json(exchange, tickers, second_try=False):
+def get_ticker_data_as_json(exchange, tickers, attempt_number=0):
     """Construct an url that makes an api call for all the given tickers and handle possible errors"""
     url = MAIN_URL + exchange + '?&symbols='
     for ticker in tickers:
@@ -40,13 +40,14 @@ def get_ticker_data_as_json(exchange, tickers, second_try=False):
     if response.status_code == 200:
         return json.loads(response.text)
     else:
-        #  Wait 20 sec then try to get the data again. If response is still not 200 then return False
+        #  Wait 20 sec then try to get the data again. If response is still not 200 after 4 times - return False
         print(response.status_code)
-        if not second_try:
+        if attempt_number < 3:
             time.sleep(20)
-            print('Second try to get data')
-            return get_ticker_data_as_json(exchange, tickers, second_try=True)
+            print('Another try to get data')
+            return get_ticker_data_as_json(exchange, tickers, attempt_number=attempt_number + 1)
         else:
+            print('Failed to get data from http 4 consecutive times!')
             return False
 
 
