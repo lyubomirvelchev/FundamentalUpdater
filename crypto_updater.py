@@ -64,7 +64,7 @@ class UpdateCryptoTable:
         self.db_connection = create_engine(self.connection_str + '/' + self.database_name)
         structure_dict = copy.deepcopy(CRYPTO_STRUCTURE_DICT)
         self.new_data = get_crypto_data_as_dataframe(structure_dict)
-        if not self.new_data:
+        if self.new_data is False:
             print('An error has occurred!')
             return
         print("New data extracted")
