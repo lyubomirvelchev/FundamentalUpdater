@@ -250,7 +250,6 @@ class UpdateTables:
 
     def construct_execute_insert_on_duplicate_sql_query(self, table_name, tickers_to_be_changed):
         """Create a raw sql query as string with updated values for all given tickers and execute that query"""
-        print(len(tickers_to_be_changed))
         if len(tickers_to_be_changed) == 0:
             return
         table = self.new_tables[table_name]
@@ -282,7 +281,7 @@ class UpdateTables:
         insert_sql_query = insert_sql_query[:-2]
         insert_sql_query += ';'
         self.db_connection.execute(insert_sql_query)  # execute the raw sql query
-        print(table_name + ' updated!')
+        print(len(tickers_to_be_changed), 'rows in ' + table_name + ' updated!')
 
     def delete_delisted_tickers(self):
         """
@@ -323,17 +322,14 @@ class UpdateTables:
         url = f'https://eodhistoricaldata.com/img/logos/US/{ticker}.png'
         response = requests.get(url)
         if response.status_code == 200:
-            print(prefix + ticker, url)
             return prefix + ticker, url
         else:
             ticker_lower = ticker.lower()
             url = f'https://eodhistoricaldata.com/img/logos/US/{ticker_lower}.png'
             response = requests.get(url)
             if response.status_code == 200:
-                print(prefix + ticker, url)
                 return prefix + ticker, url
             else:
-                print(prefix + ticker, None)
                 return prefix + ticker, None
 
     def construct_execute_insert_query_logos(self, new_ticker_logos):
