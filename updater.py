@@ -1,4 +1,4 @@
-import copy, json, pprint, requests, time
+import copy, json, requests, time
 import pandas as pd
 import numpy as np
 from project_constants import *
@@ -79,7 +79,9 @@ def extract_full_market_data(structure_dict, exchange_list):
 def insert_bulk_information(data, structure_dict):
     """Insert data into dictionary. Construct TickerID and asset_id columns artificially. Append missing info as None"""
     for stocks_info in data.values():
-        ticker = 'st_' + stocks_info['General']['Code']
+        type_of_ticker = stocks_info['General']['Type']
+        ticker_symbol = stocks_info['General']['Code']
+        ticker = 'st_' + ticker_symbol if type_of_ticker != 'ETF' else 'et_' + ticker_symbol
         for table_name, dictt in stocks_info.items():
             used_columns = set()
             if table_name not in SPECIAL_TABLES:
@@ -298,7 +300,7 @@ class UpdateTables:
         print("Deleted")
         print(self.tickers_to_delete)
 
-    def get_all_logos(self, ):
+    def get_all_logos(self):
         """Append tuples (asset_id, logo_url) for all newly added tickers (logo url cannot be currently updated!)"""
         table = pd.read_sql_table('logos', con=self.db_connection)
         available_tickers = list(table['TickerID'].values)
@@ -317,19 +319,22 @@ class UpdateTables:
     @staticmethod
     def get_single_ticker_logo(ticker):
         """Try to get the logo url for ticker with upper and lower letters. If both responses are != 200, return None"""
-        ticker = ticker.split('_')[1]
+        prefix, ticker = ticker.split('_')[0] + '_', ticker.split('_')[1]
         url = f'https://eodhistoricaldata.com/img/logos/US/{ticker}.png'
         response = requests.get(url)
         if response.status_code == 200:
-            return 'st_' + ticker, url
+            print(prefix + ticker, url)
+            return prefix + ticker, url
         else:
             ticker_lower = ticker.lower()
             url = f'https://eodhistoricaldata.com/img/logos/US/{ticker_lower}.png'
             response = requests.get(url)
             if response.status_code == 200:
-                return 'st_' + ticker, url
+                print(prefix + ticker, url)
+                return prefix + ticker, url
             else:
-                return 'st_' + ticker, None
+                print(prefix + ticker, None)
+                return prefix + ticker, None
 
     def construct_execute_insert_query_logos(self, new_ticker_logos):
         """Insert logos for up to 999 ticker in table logos in database"""
@@ -344,6 +349,6 @@ class UpdateTables:
     def insert_all_logos_in_db(self, new_ticker_logos):
         """Split new_ticker_logos into chunks of 999 values and construct/execute insert query for each chunk."""
         while len(new_ticker_logos) > MAX_NUMBER_OF_TICKERS_PER_QUERY:
-            self.construct_execute_insert_query_logos(list[:MAX_NUMBER_OF_TICKERS_PER_QUERY])
+            self.construct_execute_insert_query_logos(new_ticker_logos[:MAX_NUMBER_OF_TICKERS_PER_QUERY])
             new_ticker_logos = new_ticker_logos[MAX_NUMBER_OF_TICKERS_PER_QUERY:]
         self.construct_execute_insert_query_logos(new_ticker_logos)
