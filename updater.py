@@ -58,7 +58,10 @@ def extract_full_market_data(structure_dict, exchange_list):
         exchange_list = ['NYSE']
     for exchange in exchange_list:
         print(exchange)
-        tickers = tickers_per_exchange[exchange]
+        try:
+            tickers = tickers_per_exchange[exchange]
+        except KeyError:
+            continue
         counter = 1
         iterate_loop = True
         while iterate_loop:
