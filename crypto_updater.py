@@ -175,7 +175,7 @@ class UpdateCryptoTable:
         """
         if not self.tickers_to_delete:
             return
-        delete_sql_query = 'DELETE FROM {}.{} WHERE asset_id IN ('.format(self.database_name, self.main_table_name)
+        delete_sql_query = 'DELETE FROM {}.{} WHERE Symbol IN ('.format(self.database_name, self.main_table_name)
         for ticker in self.tickers_to_delete:
             delete_sql_query += '\'{}\', '.format(ticker)
         delete_sql_query = delete_sql_query[:-2]
