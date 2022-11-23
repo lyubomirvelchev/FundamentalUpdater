@@ -1,6 +1,8 @@
 EOD_API_KEY = '60941c62f10668.99813942'
 MAIN_URL = 'http://eodhistoricaldata.com/api/bulk-fundamentals/'
 SYMBOL_LIST_URL = 'https://eodhistoricaldata.com/api/exchange-symbol-list/US?api_token='
+INDICES_URL = 'https://api.twelvedata.com/indices?country=United%20States'
+FOREX_URL = 'https://api.twelvedata.com/forex_pairs'
 MAIN_TABLE_NAME = 'General'
 SPECIAL_TABLES = ['Earnings', 'Financials']
 TICKER_TYPES = ['ETF', 'Common Stock', 'Preferred Stock']
@@ -71,6 +73,14 @@ CRYPTO_TABLE_COLUMNS = ['Id', 'Url', 'ImageUrl', 'ContentCreatedOn', 'Name', 'Sy
                         'DecimalPoints']
 
 CRYPTO_STRUCTURE_DICT = {col: [] for col in CRYPTO_TABLE_COLUMNS}
+
+FOREX_TABLE_COLUMNS = ['asset_id', 'symbol', 'name']
+FOREX_PAIRS_TABLE_COLUMNS = ['asset_id', 'symbol', 'currency_group', 'currency_base', 'currency_quote']
+INDICES_TABLE_COLUMNS = ['asset_id', 'symbol', 'name', 'country', 'currency']
+
+FOREX_TABLE_STRUCTURE = {col: [] for col in FOREX_TABLE_COLUMNS}
+FOREX_PAIRS_TABLE_STRUCTURE = {col: [] for col in FOREX_PAIRS_TABLE_COLUMNS}
+INDICES_TABLE_STRUCTURE = {col: [] for col in INDICES_TABLE_COLUMNS}
 
 CRYPTO_SPECIAL_COLUMNS = ['Taxonomy', 'Rating', 'Symbol']
 CRYPTO_URL = 'https://min-api.cryptocompare.com/data/all/coinlist'
