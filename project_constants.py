@@ -41,6 +41,7 @@ EARNINGS_TABLE_COLUMNS = ['date', 'epsActual', 'epsEstimate', 'epsDifference', '
 FINANCIALS_TABLE_COLUMNS = ['currency_symbol', 'quarterly_last_0', 'quarterly_last_1', 'quarterly_last_2',
                             'quarterly_last_3', 'yearly_last_0', 'yearly_last_1', 'yearly_last_2', 'yearly_last_3'] + [
                                'TickerID']
+NON_INCLUDE_COLUMNS = ['LEI']
 
 STRUCTURE = {
     'General': {col: [] for col in MAIN_TABLE_COLUMNS},

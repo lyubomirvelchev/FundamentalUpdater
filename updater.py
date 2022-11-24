@@ -93,8 +93,9 @@ def insert_bulk_information(data, structure_dict):
                 if table_name == 'General':
                     structure_dict[table_name]['asset_id'].append(ticker)
                 for key, value in dictt.items():
-                    structure_dict[table_name][key].append(value)
-                    used_columns.add(key)
+                    if key not in NON_INCLUDE_COLUMNS:
+                        structure_dict[table_name][key].append(value)
+                        used_columns.add(key)
                 used_columns.add('asset_id') if table_name == 'General' else used_columns.add('TickerID')
                 unupdated_keys = set(structure_dict[table_name].keys()) - used_columns
                 for unupdated_value in unupdated_keys:  # add None to keys that are missing in the initial data
